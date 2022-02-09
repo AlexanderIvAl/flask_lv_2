@@ -8,7 +8,7 @@
 # Работа с GitHub
 Копирование с удаленного репозитория: 
 
-git clone https://github.com/AlexanderIvAl/Flask_kurs2
+git clone https://github.com/AlexanderIvAl/flask_lv_2
 
 Настройка Git:
 
