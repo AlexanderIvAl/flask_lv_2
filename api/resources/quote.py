@@ -1,11 +1,12 @@
 from typing_extensions import Required
-from api import Resource, reqparse, db
+from api import Resource, reqparse, db, auth
 from api.models.author import AuthorModel
 from api.models.quote import QuoteModel
 from api.schemas.quote import quote_schema, quotes_schema
 
 
 class QuoteResource(Resource):
+    @auth.login_required
     def get(self, author_id=None, quote_id=None):
         """
         Обрабатываем GET запросы
@@ -30,6 +31,7 @@ class QuoteResource(Resource):
         return {"Error": "Quote not found"}, 404
 
 
+    @auth.login_required
     def post(self, author_id):
         parser = reqparse.RequestParser()
         parser.add_argument("text", required=True)
@@ -43,19 +45,26 @@ class QuoteResource(Resource):
         return {"Error": f"Author id={author_id} not found"}, 404
 
 
+    @auth.login_required
     def put(self, author_id, quote_id):
         parser = reqparse.RequestParser()
         # parser.add_argument("author")
         parser.add_argument("text", required=True)
         new_data = parser.parse_args()
-
         quote = QuoteModel.query.get(quote_id)
+        author = AuthorModel.query.get(author_id)
+        if quote is None:
+            quote = QuoteModel(author, new_data["text"])
+            db.session.add(quote)
+            db.session.commit()
+            return quote_schema.dump(quote), 201
         # quote.author.name = new_data["author"]
         quote.text = new_data["text"]
         db.session.commit()
         return quote_schema.dump(quote), 200
 
 
+    @auth.login_required
     def delete(self, author_id, quote_id):
         quote = QuoteModel.query.get(quote_id)
         author = AuthorModel.query.get(author_id)
