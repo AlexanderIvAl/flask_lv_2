@@ -1,7 +1,7 @@
 from typing_extensions import Required
-from api import Resource, reqparse, db, auth
-from api.models.author import AuthorModel
 from api.models.quote import QuoteModel
+from api.models.author import AuthorModel
+from api import Resource, reqparse, db, auth
 from api.schemas.quote import quote_schema, quotes_schema
 
 

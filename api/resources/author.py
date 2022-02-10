@@ -1,5 +1,5 @@
-from api import Resource, reqparse, db, auth
 from api.models.author import AuthorModel
+from api import Resource, reqparse, db, auth
 from api.schemas.author import author_schema, authors_schema
 
 

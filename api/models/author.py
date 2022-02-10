@@ -1,5 +1,5 @@
-from email.policy import default
 from api import db
+from email.policy import default
 
 
 class AuthorModel(db.Model):

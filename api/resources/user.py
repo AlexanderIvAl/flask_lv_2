@@ -1,6 +1,6 @@
+from api.models.user import UserModel
 from api import Resource, reqparse, db
 from api.schemas.user import user_schema, users_schema
-from api.models.user import UserModel
 
 
 class UserResource(Resource):
