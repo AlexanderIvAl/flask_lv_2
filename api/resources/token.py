@@ -1,5 +1,5 @@
-
 from api import Resource, g, auth
+
 
 class TokenResource(Resource):
     @auth.login_required

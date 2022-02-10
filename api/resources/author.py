@@ -17,7 +17,7 @@ class AuthorResource(Resource):
         # return author.to_dict(), 200
         return author_schema.dump(author), 200
 
-    @auth.login_required
+    @auth.login_required(role='admin')
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument("name", required=True)

@@ -18,6 +18,7 @@ class UserResource(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)
         parser.add_argument("password", required=True)
+        parser.add_argument("role")
         data = parser.parse_args()
         user = UserModel(**data)
         db.session.add(user)
@@ -28,12 +29,15 @@ class UserResource(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument("username")
         parser.add_argument("password")
+        parser.add_argument("role")
         user_data = parser.parse_args()
         user = UserModel.query.get(user_id)
         if user is None:
             return f"User with id {user_id} not found", 404
         if user_data["username"]:
             user.username = user_data["username"]
+        if user_data["role"]:
+            user.role = user_data["role"]
         if user_data["password"]:
             user.hash_password(user_data["password"])
         db.session.commit()

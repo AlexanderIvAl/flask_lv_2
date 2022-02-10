@@ -9,9 +9,11 @@ class UserModel(db.Model):
      id = db.Column(db.Integer, primary_key=True)
      username = db.Column(db.String(32), index=True)
      password_hash = db.Column(db.String(128))
+     role = db.Column(db.String(32), server_default="simple_user")
 
-     def __init__(self, username, password):
+     def __init__(self, username, password, role="simple_user"):
           self.username = username
+          self.role = role
           self.hash_password(password)
 
      def hash_password(self, password):
@@ -23,6 +25,9 @@ class UserModel(db.Model):
      def generate_auth_token(self, expiration=600):
           s = Serializer(Config.SECRET_KEY, expires_in=expiration)
           return s.dumps({'id': self.id})
+     
+     def get_roles(self):
+          return [self.role]
 
      @staticmethod
      def verify_auth_token(token):
